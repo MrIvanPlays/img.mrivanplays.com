@@ -57,6 +57,7 @@ public class ImageViewHandler implements Route {
     File file = files[0];
     String fileExtension = file.getName().replace(".", ",").split(",")[1];
     response.raw().setContentType("image/" + fileExtension);
+    response.raw().setContentLengthLong(file.length());
     response.status(200);
 
     try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {

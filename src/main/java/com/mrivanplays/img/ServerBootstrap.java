@@ -48,7 +48,7 @@ public class ServerBootstrap {
       imagesDirectory.mkdirs();
     }
 
-    FaviconHandler favicon = new FaviconHandler(baseDirectory);
+    FaviconHandler favicon = new FaviconHandler();
     get("/favicon.ico", favicon);
 
     ImageViewHandler imgView = new ImageViewHandler(imagesDirectory);

@@ -36,8 +36,8 @@ public class FaviconHandler implements Route {
 
   private File file;
 
-  public FaviconHandler(File baseDirectory) {
-    file = new File(baseDirectory, "favicon.ico");
+  public FaviconHandler() {
+    file = new File("usr/share/nginx/favicon.ico");
   }
 
   @Override

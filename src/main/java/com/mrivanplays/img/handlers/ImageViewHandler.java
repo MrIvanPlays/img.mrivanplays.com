@@ -44,23 +44,28 @@ public class ImageViewHandler implements Route {
   public Object handle(Request request, Response response) throws Exception {
     String id = request.params(":imageLink");
     File[] files = imagesDirectory.listFiles((dir, name) -> {
+      if (id.indexOf('.') != -1) {
+        return name.equalsIgnoreCase(id);
+      }
       String actualName = name.replace(".", ",").split(",")[0];
       return actualName.equalsIgnoreCase(id);
     });
+    File responseFile = null;
     if (files == null) {
-      return notFound(response);
+      responseFile = new File("/usr/share/nginx/imgserver/404.png");
     }
-    if (files.length != 1) {
-      return notFound(response);
+    if (responseFile == null && files.length != 1) {
+      responseFile = new File("/usr/share/nginx/imgserver/404.png");
     }
-
-    File file = files[0];
-    String fileExtension = file.getName().replace(".", ",").split(",")[1];
+    if (responseFile == null) {
+      responseFile = files[0];
+    }
+    String fileExtension = responseFile.getName().replace(".", ",").split(",")[1];
     response.raw().setContentType("image/" + fileExtension);
-    response.raw().setContentLengthLong(file.length());
+    response.raw().setContentLengthLong(responseFile.length());
     response.status(200);
 
-    try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+    try (InputStream in = new BufferedInputStream(new FileInputStream(responseFile))) {
       try (OutputStream out = new BufferedOutputStream(response.raw().getOutputStream())) {
         byte[] buf = new byte[8192];
         while (true) {
@@ -73,11 +78,5 @@ public class ImageViewHandler implements Route {
       }
     }
     return "";
-  }
-
-  private String notFound(Response response) {
-    response.type("text/html");
-    response.status(404);
-    return "<!doctype html><html><h1>404 Not Found</h1></html>";
   }
 }

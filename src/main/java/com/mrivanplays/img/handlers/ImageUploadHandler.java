@@ -69,9 +69,7 @@ public class ImageUploadHandler implements Route {
       Files.copy(in, out);
       filePart.delete();
     }
-    String link =
-        "https://img.mrivanplays.com/"
-            + filePart.getSubmittedFileName().replace(".", ",").split(",")[0];
+    String link = "https://img.mrivanplays.com/" + filePart.getSubmittedFileName();
     return "{\"link\": \"" + link + "\"}";
   }
 }

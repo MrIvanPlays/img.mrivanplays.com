@@ -65,7 +65,7 @@ public class ImageUploadHandler implements Route {
     }
     request.raw().setAttribute("org.eclipse.jetty.multipartConfig", config);
     Part filePart = request.raw().getPart("image");
-    String extension = filePart.getSubmittedFileName().split("\\.")[2];
+    String extension = filePart.getSubmittedFileName().split("\\.")[1];
     String fileName = RandomStringGenerator.generateRandomString() + extension;
     Path out = Paths.get(imagesDirectoryPath + File.separator + fileName);
     try (InputStream in = filePart.getInputStream()) {

@@ -22,6 +22,7 @@
 */
 package com.mrivanplays.img.handlers;
 
+import com.mrivanplays.img.utils.RandomStringGenerator;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -64,12 +65,13 @@ public class ImageUploadHandler implements Route {
     }
     request.raw().setAttribute("org.eclipse.jetty.multipartConfig", config);
     Part filePart = request.raw().getPart("image");
-    Path out = Paths.get(imagesDirectoryPath + File.separator + filePart.getSubmittedFileName());
+    String extension = filePart.getSubmittedFileName().split("\\.")[2];
+    String fileName = RandomStringGenerator.generateRandomString() + extension;
+    Path out = Paths.get(imagesDirectoryPath + File.separator + fileName);
     try (InputStream in = filePart.getInputStream()) {
       Files.copy(in, out);
       filePart.delete();
     }
-    String link = "https://img.mrivanplays.com/" + filePart.getSubmittedFileName();
-    return "{\"link\": \"" + link + "\"}";
+    return "https://img.mrivanplays.com/" + fileName;
   }
 }

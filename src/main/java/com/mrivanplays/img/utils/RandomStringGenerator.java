@@ -1,13 +1,17 @@
 package com.mrivanplays.img.utils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomStringGenerator {
 
   public static String generateRandomString() {
-    byte[] rnd = new byte[11];
-    ThreadLocalRandom.current().nextBytes(rnd);
-    return new String(rnd, StandardCharsets.UTF_8);
+    int leftLimit = 97; // letter 'a'
+    int rightLimit = 122; // letter 'z'
+    int targetStringLength = 10;
+
+    return ThreadLocalRandom.current().ints(leftLimit, rightLimit + 1)
+        .limit(targetStringLength)
+        .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+        .toString();
   }
 }

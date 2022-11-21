@@ -38,7 +38,7 @@ public class ServerBootstrap {
     port(9899);
     initExceptionHandler(Throwable::printStackTrace);
 
-    File baseDirectory = new File("/usr/share/nginx/imgserver/");
+    File baseDirectory = new File("/var/www/imgserver/");
     if (!baseDirectory.exists()) {
       baseDirectory.mkdirs();
     }
